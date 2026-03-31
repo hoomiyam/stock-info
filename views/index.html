@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스톡인포 — 논문 기반 주식·투자 정보 | StockInfo</title>
+  <meta name="description" content="최신 금융·투자 논문을 기반으로 한 신뢰할 수 있는 주식 정보. Evidence-based stock and investment information.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="스톡인포 — 논문 기반 주식·투자 정보">
+  <meta property="og:description" content="최신 금융 논문 기반 주식·투자 정보 포털">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-STOCK00001"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-STOCK00001');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5440006732512769" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Noto Sans KR','Inter',system-ui,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+    a{text-decoration:none;color:inherit}
+
+    /* Header */
+    .header{background:#161b22;border-bottom:1px solid #30363d;padding:12px 16px;position:sticky;top:0;z-index:40;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+    .header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .logo{font-size:22px;font-weight:900;color:#2ea043;letter-spacing:-0.5px;display:flex;align-items:center;gap:6px}
+    .logo span{color:#f0b429}
+    .logo-sub{font-size:11px;color:#8b949e;font-weight:400;margin-top:2px}
+    .search-bar{flex:1;min-width:180px;max-width:360px;position:relative}
+    .search-bar input{width:100%;padding:8px 14px 8px 36px;border:1px solid #30363d;border-radius:20px;background:#0d1117;color:#e6edf3;font-size:14px;outline:none}
+    .search-bar input:focus{border-color:#2ea043}
+    .search-bar::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px}
+    .lang-btns{display:flex;gap:4px;margin-left:auto}
+    .lang-btn{padding:5px 12px;border:1px solid #30363d;border-radius:12px;background:transparent;color:#8b949e;cursor:pointer;font-size:13px;font-weight:600}
+    .lang-btn.active{background:#2ea043;color:#fff;border-color:#2ea043}
+
+    /* Nav */
+    .nav{background:#161b22;border-bottom:1px solid #30363d;overflow-x:auto;scrollbar-width:none}
+    .nav::-webkit-scrollbar{display:none}
+    .nav-inner{max-width:1100px;margin:0 auto;display:flex;gap:0;white-space:nowrap}
+    .nav-item{padding:10px 16px;font-size:13px;font-weight:600;color:#8b949e;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;flex-shrink:0}
+    .nav-item:hover,.nav-item.active{color:#2ea043;border-bottom-color:#2ea043}
+
+    /* Ticker */
+    .ticker-bar{background:#0d1117;border-bottom:1px solid #21262d;padding:6px 0;overflow:hidden;font-size:12px}
+    .ticker-inner{display:flex;gap:24px;animation:ticker 30s linear infinite;white-space:nowrap;width:max-content}
+    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .ticker-item{color:#8b949e}
+    .ticker-item .up{color:#3fb950}
+    .ticker-item .down{color:#f85149}
+
+    /* Main */
+    .main{max-width:1100px;margin:0 auto;padding:16px}
+    .section-title{font-size:18px;font-weight:800;margin:20px 0 12px;color:#e6edf3;display:flex;align-items:center;gap:8px}
+
+    /* Grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:24px}
+
+    /* Card */
+    .card{background:#161b22;border:1px solid #30363d;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s;display:flex;flex-direction:column}
+    .card:hover{transform:translateY(-2px);border-color:#2ea043;box-shadow:0 4px 20px rgba(46,160,67,.15)}
+    .card-img{width:100%;height:160px;object-fit:cover;background:#21262d}
+    .card-img-placeholder{width:100%;height:160px;background:linear-gradient(135deg,#1c2128,#21262d);display:flex;align-items:center;justify-content:center;font-size:40px}
+    .card-body{padding:14px;flex:1;display:flex;flex-direction:column;gap:8px}
+    .card-cat{font-size:11px;font-weight:700;color:#2ea043;background:rgba(46,160,67,.1);padding:3px 8px;border-radius:8px;display:inline-block}
+    .card-title{font-size:15px;font-weight:700;line-height:1.4;color:#e6edf3}
+    .card-summary{font-size:13px;color:#8b949e;line-height:1.6;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .card-footer{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#6e7681;padding-top:8px;border-top:1px solid #21262d}
+    .card-badge{background:#f0b429;color:#0d1117;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px}
+
+    /* Pagination */
+    .pagination{display:flex;justify-content:center;gap:6px;padding:20px 0}
+    .page-btn{width:36px;height:36px;border:1px solid #30363d;border-radius:8px;background:transparent;color:#8b949e;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+    .page-btn.active{background:#2ea043;color:#fff;border-color:#2ea043}
+    .page-btn:hover:not(.active){border-color:#2ea043;color:#2ea043}
+
+    /* Article */
+    .main.article{padding:20px 16px;max-width:780px}
+    .back-btn{background:transparent;border:1px solid #30363d;color:#8b949e;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;margin-bottom:16px}
+    .back-btn:hover{color:#2ea043;border-color:#2ea043}
+    .article-title{font-size:24px;font-weight:900;line-height:1.4;margin:10px 0 12px;color:#e6edf3}
+    .article-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#6e7681;margin-bottom:12px}
+    .share-btn,.like-btn{background:#21262d;border:1px solid #30363d;color:#8b949e;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;margin:4px 4px 16px 0}
+    .share-btn:hover{color:#2ea043;border-color:#2ea043}
+    .like-btn:hover,.like-btn.liked{color:#f0b429;border-color:#f0b429}
+    .article-img{width:100%;max-height:400px;object-fit:cover;border-radius:12px;margin-bottom:20px}
+    .article-content{font-size:15px;line-height:2;color:#c9d1d9}
+    .article-content h2{font-size:17px;font-weight:800;color:#2ea043;margin:32px 0 16px;padding:10px 14px;background:rgba(46,160,67,.08);border-radius:10px;border-left:4px solid #2ea043}
+    .article-content ul,.article-content ol{margin:12px 0;padding-left:24px}
+    .article-content li{margin:8px 0;line-height:1.8}
+    .article-content strong{color:#e6edf3;font-weight:700}
+    .article-content a{color:#2ea043;text-decoration:underline}
+    .article-content hr{border:none;border-top:1px solid #30363d;margin:32px 0}
+    .article-content p{margin:12px 0}
+
+    /* Footer */
+    .footer{background:#161b22;border-top:1px solid #30363d;padding:24px 16px;margin-top:40px;text-align:center;font-size:13px;color:#6e7681}
+    .footer a{color:#2ea043;margin:0 8px}
+
+    .hidden{display:none!important}
+    .loading{text-align:center;padding:40px;color:#8b949e}
+
+    @media(max-width:640px){
+      .grid{grid-template-columns:1fr}
+      .article-title{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div>
+        <div class="logo">📈 스톡인포 <span>StockInfo</span></div>
+        <div class="logo-sub">논문 기반 주식·투자 정보</div>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="종목, 전략, 투자법 검색..." onkeydown="if(event.key==='Enter')doSearch()">
+      </div>
+      <div class="lang-btns">
+        <button class="lang-btn active" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn" onclick="setLang('en')">English</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Ticker -->
+  <div class="ticker-bar">
+    <div class="ticker-inner" id="ticker">
+      <span class="ticker-item">S&P 500 <span class="up">▲ 0.42%</span></span>
+      <span class="ticker-item">NASDAQ <span class="up">▲ 0.81%</span></span>
+      <span class="ticker-item">KOSPI <span class="down">▼ 0.23%</span></span>
+      <span class="ticker-item">KOSDAQ <span class="up">▲ 0.55%</span></span>
+      <span class="ticker-item">DOW <span class="up">▲ 0.17%</span></span>
+      <span class="ticker-item">USD/KRW <span class="down">▼ 0.10%</span></span>
+      <span class="ticker-item">GOLD <span class="up">▲ 0.33%</span></span>
+      <span class="ticker-item">BTC <span class="up">▲ 1.24%</span></span>
+      <!-- duplicate for loop -->
+      <span class="ticker-item">S&P 500 <span class="up">▲ 0.42%</span></span>
+      <span class="ticker-item">NASDAQ <span class="up">▲ 0.81%</span></span>
+      <span class="ticker-item">KOSPI <span class="down">▼ 0.23%</span></span>
+      <span class="ticker-item">KOSDAQ <span class="up">▲ 0.55%</span></span>
+      <span class="ticker-item">DOW <span class="up">▲ 0.17%</span></span>
+      <span class="ticker-item">USD/KRW <span class="down">▼ 0.10%</span></span>
+      <span class="ticker-item">GOLD <span class="up">▲ 0.33%</span></span>
+      <span class="ticker-item">BTC <span class="up">▲ 1.24%</span></span>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="nav-item active" onclick="filterCat(null, this)" data-ko="전체" data-en="All">전체</div>
+    </div>
+  </nav>
+
+  <div id="page-list">
+    <div class="main">
+      <div class="section-title" id="section-title">📰 최신 투자 인사이트</div>
+      <div class="grid" id="article-grid"></div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+
+  <div id="page-article" class="hidden">
+    <div class="main article" id="article-content"></div>
+  </div>
+
+  <footer class="footer">
+    <p>스톡인포는 학술 논문 기반 정보를 제공하며, 투자 권유가 아닙니다.</p>
+    <p style="margin-top:8px">
+      <a href="/about">소개</a>
+      <a href="/privacy">개인정보처리방침</a>
+      <a href="/terms">이용약관</a>
+      <a href="/contact">문의</a>
+    </p>
+    <p style="margin-top:8px;font-size:11px">© 2025 StockInfo. 투자에는 원금 손실 위험이 있습니다.</p>
+  </footer>
+
+  <script>
+    let lang = localStorage.getItem('stock-lang') || 'ko';
+    let currentCat = null;
+    let currentPage = 1;
+    let totalPages = 1;
+
+    const i18n = {
+      title: { ko: '스톡인포 — 논문 기반 주식·투자 정보', en: 'StockInfo — Evidence-based Investment Research' },
+      sectionTitle: { ko: '📰 최신 투자 인사이트', en: '📰 Latest Investment Insights' },
+      search: { ko: '종목, 전략, 투자법 검색...', en: 'Search stocks, strategies...' },
+      backBtn: { ko: '← 목록으로', en: '← Back to list' },
+      copyLink: { ko: '🔗 링크 복사', en: '🔗 Copy Link' },
+      copied: { ko: '✅ 복사됨!', en: '✅ Copied!' },
+    };
+    function t(k) { return i18n[k]?.[lang] || i18n[k]?.ko || k; }
+
+    function setLang(l) {
+      lang = l;
+      localStorage.setItem('stock-lang', l);
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-btn:${l === 'ko' ? 'first' : 'last'}-child`).classList.add('active');
+      document.getElementById('searchInput').placeholder = t('search');
+      document.getElementById('section-title').textContent = t('sectionTitle');
+      renderArticles();
+    }
+
+    function applyI18n() {
+      document.getElementById('searchInput').placeholder = t('search');
+      document.getElementById('section-title').textContent = t('sectionTitle');
+    }
+
+    async function loadCategories() {
+      const data = await fetch('/api/categories').then(r => r.json());
+      const nav = document.querySelector('.nav-inner');
+      nav.innerHTML = `<div class="nav-item active" onclick="filterCat(null,this)" data-ko="전체" data-en="All">${lang==='ko'?'전체':'All'}</div>`;
+      for (const c of data) {
+        const label = `${c.icon} ${lang==='ko' ? c.name_ko : c.name}`;
+        const div = document.createElement('div');
+        div.className = 'nav-item';
+        div.dataset.ko = `${c.icon} ${c.name_ko}`;
+        div.dataset.en = `${c.icon} ${c.name}`;
+        div.dataset.slug = c.slug;
+        div.textContent = label;
+        div.onclick = function() { filterCat(c.slug, this); };
+        nav.appendChild(div);
+      }
+    }
+
+    let articlesCache = [];
+    async function loadArticles(page = 1) {
+      currentPage = page;
+      const params = new URLSearchParams({ page, limit: 12 });
+      if (currentCat) params.append('category', currentCat);
+      const q = document.getElementById('searchInput').value.trim();
+      if (q) params.append('search', q);
+
+      const data = await fetch(`/api/articles?${params}`).then(r => r.json());
+      articlesCache = data.articles || [];
+      totalPages = data.totalPages || 1;
+      renderArticles();
+      renderPagination();
+    }
+
+    function renderArticles() {
+      const grid = document.getElementById('article-grid');
+      if (!articlesCache.length) { grid.innerHTML = '<div class="loading">📭 기사가 없습니다</div>'; return; }
+      grid.innerHTML = articlesCache.map(a => {
+        const title = lang === 'ko' ? (a.title_ko || a.title) : a.title;
+        const summary = lang === 'ko' ? (a.summary_ko || a.summary) : a.summary;
+        const cat = lang === 'ko' ? a.category_name_ko : a.category_name;
+        const imgHtml = a.thumbnail
+          ? `<img class="card-img" src="${a.thumbnail}" alt="${title}" loading="lazy">`
+          : `<div class="card-img-placeholder">${a.category_icon || '📈'}</div>`;
+        const pubDate = new Date(a.created_at).toLocaleDateString('ko-KR',{month:'short',day:'numeric'});
+        return `<div class="card" onclick="openArticle('${a.slug}')">
+          ${imgHtml}
+          <div class="card-body">
+            <span class="card-cat">${a.category_icon} ${cat}</span>
+            <div class="card-title">${title}</div>
+            <div class="card-summary">${summary}</div>
+            <div class="card-footer">
+              <span>📅 ${pubDate}</span>
+              <span>👀 ${a.view_count||0} · 👍 ${a.like_count||0}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function renderPagination() {
+      const pg = document.getElementById('pagination');
+      if (totalPages <= 1) { pg.innerHTML = ''; return; }
+      let html = '';
+      const start = Math.max(1, currentPage - 2), end = Math.min(totalPages, currentPage + 2);
+      if (start > 1) html += `<button class="page-btn" onclick="loadArticles(1)">1</button>`;
+      if (start > 2) html += `<span style="color:#6e7681;padding:0 4px">…</span>`;
+      for (let i = start; i <= end; i++) html += `<button class="page-btn${i===currentPage?' active':''}" onclick="loadArticles(${i})">${i}</button>`;
+      if (end < totalPages - 1) html += `<span style="color:#6e7681;padding:0 4px">…</span>`;
+      if (end < totalPages) html += `<button class="page-btn" onclick="loadArticles(${totalPages})">${totalPages}</button>`;
+      pg.innerHTML = html;
+    }
+
+    function filterCat(slug, el) {
+      currentCat = slug;
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      el.classList.add('active');
+      const label = el.dataset[lang] || el.textContent;
+      document.getElementById('section-title').textContent = slug ? `${label} 최신 기사` : t('sectionTitle');
+      history.pushState({}, '', slug ? `/category/${slug}` : '/');
+      loadArticles(1);
+    }
+
+    function doSearch() {
+      loadArticles(1);
+    }
+
+    async function openArticle(slug) {
+      const a = await fetch(`/api/articles/${slug}`).then(r => r.json());
+      if (!a || a.error) return;
+      const title = lang === 'ko' ? (a.title_ko || a.title) : a.title;
+      const content = lang === 'ko' ? (a.content_ko || a.content) : a.content;
+      const pubDate = new Date(a.created_at).toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric'});
+      const catName = lang === 'ko' ? a.category_name_ko : a.category_name;
+      const thumbHtml = a.thumbnail ? `<img class="article-img" src="${a.thumbnail}" alt="${title}">` : '';
+
+      document.getElementById('article-content').innerHTML = `
+        <button class="back-btn" onclick="goHome(event)">${t('backBtn')}</button>
+        <div>
+          <span class="card-cat">${a.category_icon} ${catName}</span>
+          <h1 class="article-title">${title}</h1>
+          <div class="article-meta">
+            <span>📅 ${pubDate}</span>
+            <span>📰 ${a.source_journal||''}</span>
+            <span>👀 조회 ${a.view_count||0}</span>
+          </div>
+          <button class="share-btn" onclick="copyArticleLink('${slug}',this)">${t('copyLink')}</button>
+          <button class="like-btn" id="like-btn" onclick="toggleLike('${slug}')">👍 <span class="like-count" id="like-count">${a.like_count||0}</span></button>
+        </div>
+        ${thumbHtml}
+        <div class="article-content" id="dyn-content-ko">${md(a.content_ko||'')}</div>
+        <div class="article-content hidden" id="dyn-content-en">${md(a.content||'')}</div>
+        <div class="ad-slot" style="margin-top:24px">
+          <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5440006732512769" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        </div>`;
+
+      if (lang === 'en') {
+        document.getElementById('dyn-content-ko').classList.add('hidden');
+        document.getElementById('dyn-content-en').classList.remove('hidden');
+      }
+
+      document.getElementById('page-list').classList.add('hidden');
+      document.getElementById('page-article').classList.remove('hidden');
+      document.title = `${title} — 스톡인포`;
+      history.pushState({}, '', `/article/${slug}`);
+      window.scrollTo(0,0);
+      checkLikeStatus(slug);
+    }
+
+    function md(text) {
+      if (!text) return '';
+      return text
+        .replace(/## (.+)/g,'<h2>$1</h2>')
+        .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')
+        .replace(/^- (.+)/gm,'<li>$1</li>')
+        .replace(/((?:<li>.*<\/li>\n?)+)/g,'<ul>$1</ul>')
+        .replace(/---/g,'<hr>')
+        .split('\n\n').map(p => {
+          if(p.startsWith('<h')||p.startsWith('<ul')||p.startsWith('<hr')) return p;
+          return `<p>${p.replace(/\n/g,' ')}</p>`;
+        }).join('\n');
+    }
+
+    async function checkLikeStatus(slug) {
+      const data = await fetch(`/api/articles/${slug}/like-status`).then(r=>r.json()).catch(()=>({liked:false,like_count:0}));
+      const btn = document.getElementById('like-btn');
+      if (btn) { if(data.liked) btn.classList.add('liked'); document.getElementById('like-count').textContent = data.like_count; }
+    }
+
+    async function toggleLike(slug) {
+      const data = await fetch(`/api/articles/${slug}/like`,{method:'POST'}).then(r=>r.json()).catch(()=>null);
+      if (!data) return;
+      const btn = document.getElementById('like-btn');
+      if (btn) { btn.classList.toggle('liked', data.liked); document.getElementById('like-count').textContent = data.like_count; }
+    }
+
+    function copyArticleLink(slug, btn) {
+      const url = `${location.origin}/article/${slug}`;
+      navigator.clipboard.writeText(url).then(() => {
+        btn.innerHTML = t('copied');
+        setTimeout(() => btn.innerHTML = t('copyLink'), 2000);
+        fetch(`/api/articles/${slug}/share`,{method:'POST'}).catch(()=>{});
+      });
+    }
+
+    function goHome(e) {
+      if (e) e.preventDefault();
+      document.getElementById('page-list').classList.remove('hidden');
+      document.getElementById('page-article').classList.add('hidden');
+      document.title = t('title');
+      history.pushState({}, '', currentCat ? `/category/${currentCat}` : '/');
+    }
+
+    window.addEventListener('popstate', () => {
+      const path = location.pathname;
+      if (path.startsWith('/article/')) openArticle(path.split('/article/')[1]);
+      else { goHome(); if(path.startsWith('/category/')) { currentCat = path.split('/category/')[1]; loadArticles(); } }
+    });
+
+    // SSR lang toggle
+    const _origSetLang = setLang;
+    setLang = function(l) {
+      if (window.__ssrArticle) {
+        lang = l;
+        localStorage.setItem('stock-lang', l);
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.lang-btn:${l === 'ko' ? 'first' : 'last'}-child`).classList.add('active');
+        const ko = document.getElementById('ssr-content-ko');
+        const en = document.getElementById('ssr-content-en');
+        if (ko && en) {
+          if (l === 'ko') { ko.classList.remove('hidden'); en.classList.add('hidden'); }
+          else { ko.classList.add('hidden'); en.classList.remove('hidden'); }
+        }
+        return;
+      }
+      _origSetLang(l);
+    };
+
+    // Init
+    applyI18n();
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn:${lang==='ko'?'first':'last'}-child`).classList.add('active');
+
+    loadCategories();
+    const initPath = location.pathname;
+    if (initPath.startsWith('/article/')) {
+      if (!window.__ssrArticle) openArticle(initPath.split('/article/')[1]);
+      else { checkLikeStatus(window.__ssrArticleSlug); document.getElementById('page-list').classList.add('hidden'); document.getElementById('page-article').classList.remove('hidden'); }
+    } else {
+      if (initPath.startsWith('/category/')) currentCat = initPath.split('/category/')[1];
+      loadArticles();
+    }
+  </script>
+</body>
+</html>
