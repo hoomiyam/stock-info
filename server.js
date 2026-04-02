@@ -59,15 +59,19 @@ app.get('/article/:slug', async (req, res) => {
       const catName = a.category_name_ko || a.category_name || '';
       const catIcon = a.category_icon || '';
 
-      const ogTags = `
-    <meta property="og:title" content="${title_ko.replace(/"/g,'&quot;')}">
-    <meta property="og:description" content="${summary_ko.replace(/"/g,'&quot;').substring(0,200)}">
-    <meta property="og:image" content="${a.thumbnail || ''}">
-    <meta property="og:url" content="https://${host}/article/${a.slug}">
-    <meta property="og:type" content="article">
-    <meta name="description" content="${summary_ko.replace(/"/g,'&quot;').substring(0,160)}">`;
-      html = html.replace('</head>', ogTags + '\n</head>');
+      // OG + title: 기존 태그 교체 (중복 방지)
+      const safeTitle   = title_ko.replace(/"/g,'&quot;');
+      const safeDesc200 = summary_ko.replace(/"/g,'&quot;').substring(0,200);
+      const safeDesc160 = summary_ko.replace(/"/g,'&quot;').substring(0,160);
       html = html.replace(/<title>[^<]*<\/title>/, `<title>${title_ko} — 스톡인포</title>`);
+      html = html.replace(/(<meta name="description" content=")[^"]*(")/,  `$1${safeDesc160}$2`);
+      html = html.replace(/(<meta property="og:title" content=")[^"]*(")/,  `$1${safeTitle}$2`);
+      html = html.replace(/(<meta property="og:description" content=")[^"]*(")/,  `$1${safeDesc200}$2`);
+      html = html.replace(/(<meta property="og:type" content=")[^"]*(")/,   `$1article$2`);
+      const extraOg = `
+    <meta property="og:image" content="${a.thumbnail || ''}">
+    <meta property="og:url" content="https://${host}/article/${a.slug}">`;
+      html = html.replace('</head>', extraOg + '\n</head>');
 
       function mdToHtml(text) {
         if (!text) return '';
